@@ -1,10 +1,16 @@
-
 import Layout from '@/components/Layout'
 import { Card } from 'antd'
-
-
+import {vector }from "interface/src/contracts/abi/vector.js";
+import {ercabi} from "interface/src/contracts/abi/erc.js";
+import { erc20ABI } from 'wagmi';
+import { getAccount } from '@wagmi/core'
+import { useEffect,useState } from 'react';
 
 export default function CoinApp() {
+  const account = getAccount();
+  const [balance, setBalance] = useState(0);
+  const [Buyamount, setBuyamount] = useState(0);
+
   return (
     <>
       <Layout>
