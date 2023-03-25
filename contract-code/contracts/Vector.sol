@@ -3,10 +3,9 @@ pragma solidity 0.8.18;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-contract Vector is ERC20, ERC20Burnable, Ownable {
+contract Vector is ERC20, ERC20Burnable {
     using SafeERC20 for ERC20;
     mapping(address => bool) public tokenExists;
    Backings[] public basketTokens;
@@ -50,7 +49,7 @@ contract Vector is ERC20, ERC20Burnable, Ownable {
             (amount % basketTokens.length) == 0,
             "enter multiple of token List"
         );
-        require(balanceOf(msg.sender) >= amount, "required balance");
+        require(balanceOf(msg.sender) >= amount*basketTokens.length*(10**decimals()), "required balance");
 
         burn(amount*basketTokens.length*(10**decimals()));
 
