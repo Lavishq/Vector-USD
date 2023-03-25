@@ -11,7 +11,7 @@ contract aUST is ERC20, ERC20Burnable, Ownable {
     address immutable public governance;
 
     constructor(address[] memory tokens, address _governance) ERC20("Average USD", "aUSD") {
-        require(_governance!=0, "governance can't be invalid")
+        require(_governance != address(0), "governance can't be invalid")
         uint iterate = tokens.length;
         for (uint256 i; i < iterate; i++) {
             address token = tokens[i];
