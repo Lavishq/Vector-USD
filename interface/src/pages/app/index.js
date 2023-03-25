@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { useContract, useSigner } from "wagmi";
 import { useAccount } from 'wagmi'
 import { ethers } from 'ethers/lib';
+import { BigNumber } from 'ethers';
 export default function CoinApp() {
   const account = getAccount();
   const [balance, setBalance] = useState(0);
@@ -47,23 +48,21 @@ export default function CoinApp() {
 
     if (address) {
 
-      for (let index = 0; index < basket.length(); index++) {
-        let contract = new ethers.Contract(basket[index]?.backedStableToken, signer)
+      for (let index = 0; index < basket.length; index++) {
+        let contract = new ethers.Contract(basket[index]?.backedStableToken, erc20ABI, signer)
         let allowance = await contract.allowance(address, SSC_ADDRESS)
-        if (ethers.utils.formatEther(allowance) >= Buyamount) {
-
-
-        } else {
-
-          contract.approve(SSC_ADDRESS,Buyamount * 10 ** basket[index]?.decimal)
-
+        let amount = BigInt(10 ** (basket[index]?.decimal).toString())
+        let amount1 = BigInt(Buyamount)
+        let amount2 = amount1 * amount
+        console.log(amount2)
+        if (BigInt((allowance)) < amount2) {
+          await contract.approve(SSC_ADDRESS, (Buyamount))
+          console.log("approving")
         }
-
-
-
       }
-
-      await sscContract?.addCollateralToGetTokens(address, ethers.utils.parseEther(Buyamount / basket.length()))
+      console.log("buying");
+      console.log(Buyamount / basket.length);
+      await sscContract?.addCollateralToGetTokens(address, (Buyamount / basket.length))
 
     }
 
