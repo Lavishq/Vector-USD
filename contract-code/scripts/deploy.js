@@ -1,31 +1,33 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
 const hre = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  const signer = ""
+  // setting up mock few usd tokens
+  const USDToken = await hre.ethers.getContractFactory("USDToken");
+  const usdt = await USDToken.deploy("USD Tether", "USDT");
+  const dai = await USDToken.deploy("USD", "DAI");
+  const frax = await USDToken.deploy("USD", "FRAX");
 
-  const lockedAmount = hre.ethers.utils.parseEther("0.001");
-
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
+  // TODO: mint tokens to a signer and provide liquidity for all the 3 tokens
   console.log(
-    `Lock with ${ethers.utils.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+    `usdt contract deployed at - ${usdt.address}`,
+    `dai contract deployed at - ${dai.address}`,
+    `frax contract deployed at - ${frax.address}`
   );
+
+  // setting up governance contract
+  const Governance = await hre.ethers.getContractFactory("Governance")
+  const gov = await Governance.deploy()
+  console.log(`governance contract deployed at - ${gov.address}`)
+
+  const aUSD = await hre.ethers.getContractFactory("aUSD");
+  const aUSD_deployed = await aUSD.deploy([usdt.address, dai.address, frax.address], gov.address);
+
+  await aUSD_deployed.deployed();
+  console.log(`aUSD contract deployed at - ${aUSD.address}`)
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
+
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;

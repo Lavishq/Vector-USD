@@ -5,11 +5,12 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract BasketToken is ERC20, ERC20Burnable, Ownable {
+contract aUST is ERC20, ERC20Burnable, Ownable {
     address[] public basketTokens;
     mapping(address => bool) public tokenExists;
+    address immutable public governance;
 
-    constructor(address[] memory tokens) ERC20("MyToken", "MTK") {
+    constructor(address[] memory tokens, address _governance) ERC20("Average USD", "aUSD") {
         uint iterate = tokens.length;
         for (uint256 i; i < iterate; i++) {
             address token = tokens[i];
@@ -18,16 +19,18 @@ contract BasketToken is ERC20, ERC20Burnable, Ownable {
             basketTokens.push(token);
             tokenExists[token] = true;
         }
+        governance = _governance;
     }
 
     function addCollateralToGetTokens(address to, uint256 amount) external {
         require(to != address(0), "Invalid recipient address");
-        require(amount > 0, "Amount must be greater than 0");
+        require(amount != 0, "Amount must be greater than 0");
         require(
             (amount % basketTokens.length) == 0,
             "enter multiple of token List"
         );
-        for (uint256 i = 0; i < basketTokens.length; i++) {
+        
+        for (uint256 i; i < basketTokens.length; i++) {
             address token = basketTokens[i];
             require(
                 ERC20(token).allowance(msg.sender, address(this)) >=
