@@ -53,7 +53,7 @@ export default function CoinApp() {
       for (let index = 0; index < basket.length; index++) {
         let contract = new ethers.Contract(basket[index]?.backedStableToken, ercabi, signer)
         let amount = BigInt(100 * 10 ** (basket[index]?.decimal).toString())
-        let amount1 = contract.mint(address, amount)
+        let amount1 = await contract.mint(address, amount)
         console.log(amount1)
       }
     }
