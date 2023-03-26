@@ -229,8 +229,9 @@ export default function CoinApp() {
                 <button onClick={BurnToken} type="button" class="text-white text-lg  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Burn VUSD</button>
               </div>
             </div>
-            <h1 >Currently the basket is only filled with DAI and USDC </h1>
-            <h1>The project is Currently on the mumbai testnet </h1>
+            <h1></h1>
+            {/* <h1 >Currently the basket is only filled with DAI and USDC </h1>
+            <h1>The project is Currently on the mumbai testnet </h1> */}
 
 
 
