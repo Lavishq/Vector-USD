@@ -2,7 +2,7 @@ import Layout from '@/components/Layout'
 import { Card } from 'antd'
 import { vector } from "../../contracts/abi/vector";
 import { ercabi } from "../../contracts/abi/erc.js";
-import { DAI_ADDRESS, SSC_ADDRESS } from '@/contracts/address';
+import { DAI_ADDRESS, SSC_ADDRESS, USDC_ADDRESS } from '@/contracts/address';
 import { erc20ABI } from 'wagmi';
 import { getAccount } from '@wagmi/core'
 import { useEffect, useState } from 'react';
@@ -191,7 +191,8 @@ export default function CoinApp() {
         await sscContract?.approve(SSC_ADDRESS, Burnamount)
         console.log("approving")
       }
-      await sscContract?.removeCollateral(Burnamount, { gasLimit: 1000000 })
+      let t = Math.floor(Burnamount / 2)
+      await sscContract?.removeCollateral(t, { gasLimit: 1000000 })
 
     }
   }
@@ -201,20 +202,20 @@ export default function CoinApp() {
   return (
     <>
       <Layout>
-        <ToastContainer
-          position="top-left"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
-        <main className='flex justify-center'>
 
+        <main className='flex justify-center'>
+          <ToastContainer
+            position="top-left"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
           <Card
             hoverable
             style={{ width: 1300, height: 600 }} className={'bg-cyan-700 text-white mt-5'} >
@@ -239,18 +240,17 @@ export default function CoinApp() {
                 <button onClick={BurnToken} type="button" class="text-white text-lg  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Burn VUSD</button>
               </div>
             </div>
-            <div onClick={minttokens}>Mint Tokens </div>
-            <h1>Currently the smart contract is deployed in the Mumbai Testnet</h1>
-            {/* <h1>Contract Address</h1>
-            <h1> USDC Address </h1>
-            <h1>DAI Address</h1> */}
-            {/* <h1 >Currently the basket is only filled with DAI and USDC </h1>
-            <h1>The project is Currently on the mumbai testnet </h1> */}
+            <h1>Currently the smart contracts are deployed in the Polygon ZKEVM</h1>
 
-
-
-
-
+            <button type="button" class="text-white text-lg  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={minttokens}>Mint DAI AND USDC Tokens </button>
+            <br />
+            <br />
+            <h1>Contract Address</h1>
+            <h1>1.  USDC Address :{USDC_ADDRESS} </h1>
+            <h1>2. DAI Address:{DAI_ADDRESS}</h1>
+            <h1>3. SSC Address:{SSC_ADDRESS}</h1>
+            <br />
+            <h1 > Currently the basket is only filled with DAI and USDC </h1>
           </Card>
         </main>
       </Layout>

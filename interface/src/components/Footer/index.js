@@ -22,10 +22,6 @@ function Footer() {
                 </ul>
             </div>
         </footer>
-
-
-
-
     )
 }
 
